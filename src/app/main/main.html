@@ -1,34 +1,127 @@
-<div class="container">
+<div class="clockdiv centerblock">
+	<p class="time">
+		{{time}}
+	</p>
+	
+	<p class="date">
+		{{date}}
+	</p>
+</div>
 
-  <div>
-    <acme-navbar creation-date="main.creationDate"></acme-navbar>
-  </div>
+<div ng-switch on="tab" class="tabholder">
+	<div ng-switch-when="1" class="my-switch-animation">
+		<div class="row">
+			<div class="col-xs-6">
+				<h1>Väder</h1>
+				<hr/>
+					
+				<div class="weatherdiv" ng-show="weather.$resolved">
+					<div class="upperholder center-block clearfix">
+						<p id="temperature" class="pull-left">
+							{{weather.Temperature}}&deg;
+						</p>
+						
+						<img class="cloudimage pull-right" ng-src="assets/images/weather/{{(weather.CloudCover / 2) | number:0}}-{{weather.PrecipitationType}}.png" />
+					</div>
+					
+					<div class="row" class="precipitationrow">
+						<div class="col-xs-6">
+							<p class="precipitation" ng-if="weather.Precipitation != 0">
+								{{weather.Precipitation}} mm av {{weather.PrecipitationType | PrecipitationTypeToString}}
+							</p>
+							<p class="precipitation" ng-if="weather.Precipitation == 0">
+								Ingen nederbörd
+							</p>
+						</div>
+						
+						<div class="col-xs-6 windcontainer clearfix">
+							<compass angle="weather.WindDirection" class="pull-left"/>
+							<p class="pull-left">{{weather.WindSpeed}} m/s</p>
+						</div>
+					</div>
+					
+					<div class="row pressureandhumidityrow">
+						<div class="col-xs-6">
+							<p class="humidity">
+								{{weather.Humidity}}% luftfuktighet
+							</p>
+						</div>
+						<div class="col-xs-6">
+							<p class="pressure">
+								{{weather.Pressure}} hPa
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
 
-  <div class="jumbotron text-center">
-    <h1>'Allo, 'Allo!</h1>
-    <p class="lead">
-      <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
-      Always a pleasure scaffolding your apps.
-    </p>
-    <p class="animated infinite" ng-class="main.classAnimation">
-      <button type="button" class="btn btn-lg btn-success" ng-click="main.showToastr()">Splendid Toastr</button>
-    </p>
-    <p>
-      With ♥ thanks to the contributions of<acme-malarkey extra-values="['Yeoman', 'Gulp', 'Angular']"></acme-malarkey>
-    </p>
-  </div>
+			<div class="col-xs-6">
+				<h1>Kalender</h1>
+				<hr />
+				
+				<div>
+					<ul class="list-unstyled">
+						<li ng-repeat="ev in events">
+							<h3>{{ev.summary}}</h3>
+							<p ng-if="ev.start.dateTime">{{ev.start.dateTime | date:'medium'}}</p>
+							<p ng-if="ev.start.date">{{ev.start.date}}</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
 
-  <div class="row">
-    <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in main.awesomeThings | orderBy:'rank'">
-      <div class="thumbnail">
-        <img class="pull-right" ng-src="assets/images/{{ awesomeThing.logo }}" alt="{{ awesomeThing.title }}">
-        <div class="caption">
-          <h3>{{ awesomeThing.title }}</h3>
-          <p>{{ awesomeThing.description }}</p>
-          <p><a ng-href="{{awesomeThing.url}}">{{ awesomeThing.url }}</a></p>
-        </div>
-      </div>
-    </div>
-  </div>
+		<div class="row">
+			<div class="col-xs-6">
+				<h1>Minecraft</h1>
+				<hr/>
+				
+				<ul class="list-unstyled">
+					<li ng-repeat="server in minecraftServers" class="clearfix">
+						<img ng-src="assets/images/server-{{server.isOnline ? 'online' : 'offline'}}.png" class="pull-left" style="width:50px;margin:30px 20px 0 0;"/>
+						
+						<div class="pull-left">
+							<h3>{{server.servername}} ({{server.levelname}})</h3>
+							<p>{{server.motd}}</p>
+							<p ng-if="server.query && server.query.players">Players: {{server.query.players | join:", "}}</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="col-xs-6">
+				<h1>Quote</h1>
+				<hr />
 
+				<div class="quoteholder" ng-bind-html="quote.quote | nl2br" />
+			</div>
+		</div>
+	</div>
+
+	<div ng-switch-when="2" class="my-switch-animation">
+		<h1 style="text-align:center;">xkcd - {{xkcd.title}}</h1>
+		<hr/>
+		
+		<img ng-src="{{xkcd.img}}" class="xkcdimage" />
+		<p class="xkcdalt">{{xkcd.alt}}</p>
+	</div>
+	
+	<div ng-switch-when="3" class="my-switch-animation">
+		<h1 style="text-align:center;">Lunch galaxen vecka {{food.week}}</h1>
+		<hr/>
+		
+		<table class="foodtable">
+			<tr ng-repeat="day in food.days">
+				<td valign="top">
+					{{day.name}}
+				</td>
+				<td>
+					<p ng-repeat="food in day.foods">
+						{{food}}
+					</p>
+				</td>
+			</tr>
+		</table>
+		
+	</div>
 </div>

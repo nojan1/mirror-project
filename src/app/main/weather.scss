@@ -1,0 +1,41 @@
+.weatherdiv {
+
+}
+
+.weatherdiv .upperholder {
+	width:280px;
+	line-height:100px;
+}
+
+#temperature {
+	font-size:60px;
+	vertical-align:center;
+}
+
+.cloudimage {
+	width:100px;
+	height:100px;
+}
+
+.precipitation {
+	font-size:20px;
+	vertical-align:center;
+}
+
+.windcontainer, .precipitationrow, .precipitationrow>.col-xs-6 {
+	line-height:50px;
+	height:50px;
+}
+
+.windcontainer {
+	font-size:20px;
+	vertical-align:center;
+}
+
+.pressureandhumidityrow {
+	margin-top:10px;
+}
+
+.humidity, .pressure {
+	font-size:18px;
+}

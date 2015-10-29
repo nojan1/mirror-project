@@ -27,6 +27,127 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
   }
 }
 
+html, body {
+	width:900px;
+	height:1440px;
+	background-color:black;
+	color:white;
+	padding:0;
+	margin:0;
+	overflow:hidden;
+}
+
+.maincontainer{
+	margin:10px;
+	overflow:hidden;
+}
+
+.clockdiv{
+	margin-top:20px;
+	text-align:center;
+}
+
+.clockdiv .time {
+	font-size:80px;
+}
+
+.clockdiv .date {
+	font-size:50px;
+}
+
+.row > .col-xs-6 > h1{
+	text-align:center;
+}
+
+.col-xs-6 p {
+	font-size:16px;
+}
+
+.xkcdimage {
+	-webkit-filter: invert(100%); 
+	margin:0 auto 0 auto;
+	max-width:850px;
+	display:block;
+}
+
+.quoteholder {
+	padding-left:10px;
+	font-size:18px;
+}
+
+/* hide the google+ popup */
+iframe[src^="https://apis.google.com"] {
+  display: none;
+}
+
+.xkcdalt {
+	text-align:center;
+	font-size:15px;
+	text-decoration:italic;
+	margin-top:10px;
+}	
+
+
+/* animate */
+
+.panel-body {
+  position:relative; 
+}
+
+.my-switch-animation.ng-enter,
+.my-switch-animation.ng-leave {
+  -webkit-transition:0.5s linear all;
+  -moz-transition:0.5s linear all;
+  -o-transition:0.5s linear all;
+  transition:0.5s linear all;
+
+  position:absolute;
+}
+
+.my-switch-animation.ng-enter {
+  left:100%;
+}
+
+.my-switch-animation.ng-leave,
+.my-switch-animation.ng-enter.ng-enter-active {
+  left:0;
+}
+
+.my-switch-animation.ng-leave.ng-leave-active {
+  left:-100%;
+}
+
+.tabholder {
+  width:900px;
+  overflow:hidden;
+}
+
+.container-fluid {
+	width:900px;
+}
+
+/* food */
+
+.foodtable {
+	font-size:20px;
+	margin:0 auto 0 auto;
+}
+
+.foodtable tr > td:first-child {
+	font-size:30px;
+	padding-right:20px;
+}
+
+.foodtable tr {
+	padding-top:10px;
+	padding-bottom:10px;
+	border-bottom:1px gray solid;
+}
+
+.foodtable tr:last-child {
+	border:none;
+}
+
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

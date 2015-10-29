@@ -1,39 +1,63 @@
-(function() {
   'use strict';
 
   angular
     .module('mirrorApp')
-    .controller('MainController', MainController);
-
-  /** @ngInject */
-  function MainController($timeout, webDevTec, toastr) {
-    var vm = this;
-
-    vm.awesomeThings = [];
-    vm.classAnimation = '';
-    vm.creationDate = 1446132787713;
-    vm.showToastr = showToastr;
-
-    activate();
-
-    function activate() {
-      getWebDevTec();
-      $timeout(function() {
-        vm.classAnimation = 'rubberBand';
-      }, 4000);
-    }
-
-    function showToastr() {
-      toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
-      vm.classAnimation = '';
-    }
-
-    function getWebDevTec() {
-      vm.awesomeThings = webDevTec.getTec();
-
-      angular.forEach(vm.awesomeThings, function(awesomeThing) {
-        awesomeThing.rank = Math.random();
-      });
-    }
-  }
-})();
+    .controller('MainController', function($scope, $timeout, smhiservice, googleservice, minecraftservice, xkcdservice, quoteservice, foodservice){
+	//Tab switching
+	function switchTab() {
+		if(!$scope.tab){
+			$scope.tab = 1;
+		}else{
+			$scope.tab += 1;
+			
+			if($scope.tab > 3){
+				$scope.tab = 1;
+			}
+		}
+		
+		$timeout(function(){
+			switchTab();
+		}, 1000 * 30); //Timeout 30 sec
+	}
+	
+	//Data stuff
+	function getData(){
+		googleservice.Login();
+		
+		$scope.weather = smhiservice.GetWeather();	
+		$scope.events = googleservice.GetEvents($scope);
+		minecraftservice.GetServers(function(servers){
+			$scope.minecraftServers = servers;
+		});
+		
+		xkcdservice.GetXkcd(function(xkcdarg){
+			$scope.xkcd = xkcdarg;
+		});
+		
+		quoteservice.GetQuote(function(quoteArg){
+			$scope.quote = quoteArg;
+		});
+		
+		foodservice.GetFood(function(foodArg){
+			$scope.food = foodArg;
+		});
+		
+		$timeout(function(){
+			getData();
+		}, 1000 * 60 * 50); //Timeout 50 min
+	}
+		
+	//Clock handling
+	function updateTime(){
+		$scope.time = moment().format("HH:mm");
+		$scope.date = moment().format("DD MMMM YYYY");
+		
+		$timeout(function(){
+			updateTime();
+		}, 1000);
+	}
+	
+	updateTime();
+	getData();
+	switchTab();
+  });3
