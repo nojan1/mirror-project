@@ -1,4 +1,4 @@
-var smhiApi = "http://opendata-download-metfcst.smhi.se/api/category/pmp1.5g/version/1/geopoint/lat/60.496/lon/15.416/data.json";
+var smhiApi = "http://opendata-download-metfcst.smhi.se/api/category/pmp1.5g/version/2/geotype/point/lon/15.416/lat/60.496/data.json";
 
 angular.module('mirrorApp').factory('smhiservice', function($resource){
 	return {
