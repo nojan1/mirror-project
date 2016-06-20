@@ -1,5 +1,39 @@
 var smhiApi = "http://opendata-download-metfcst.smhi.se/api/category/pmp1.5g/version/2/geotype/point/lon/15.416/lat/60.496/data.json";
 
+/*
+parameters
+:
+Array[15]
+0
+:
+Object
+level
+:
+2
+levelType
+:
+"hl"
+name
+:
+"t"
+unit
+:
+"Cel"
+values
+:
+Array[1]
+
+*/
+
+function getParameter(weatherObj, paramName){
+	var parameter = weatherObj.parameters.filter(function(v){ return v.name === paramName});
+	if(parameter && parameter.length > 0){
+		return parameter[0].values[0];
+	}
+
+	return undefined;
+}
+
 angular.module('mirrorApp').factory('smhiservice', function($resource){
 	return {
 		GetWeather: function(){
@@ -7,27 +41,21 @@ angular.module('mirrorApp').factory('smhiservice', function($resource){
 			var result = smhiRes.get();
 			result.$promise.then(function()
 			{
-				for(i = 0;i < result.timeseries.length;i++){
-					var weatherTime = moment(result.timeseries[i].validTime);
+				for(i = 0;i < result.timeSeries.length;i++){
+					var weatherTime = moment(result.timeSeries[i].validTime);
 					var now = moment().zone('Z');
 					
-					// if(weatherTime.get('date') == now.get('date') &&
-						// weatherTime.get('hour') == now.get('hour')){
-							// console.log(result.timeseries[i]);
-							// break;
-					// }
-					
 					if(weatherTime.isSame(now, "hour")){
-							var weatherObj = result.timeseries[i];
+							var weatherObj = result.timeSeries[i];
 							
-							result.Temperature = weatherObj.t;
-							result.Humidity = weatherObj.r;
-							result.Pressure = weatherObj.msl;
-							result.WindDirection = weatherObj.wd;
-							result.WindSpeed = weatherObj.ws;
-							result.CloudCover = weatherObj.tcc;
-							result.Precipitation = weatherObj.pit;
-							result.PrecipitationType = weatherObj.pcat;
+							result.Temperature = getParameter(weatherObj, 't');
+							result.Humidity = getParameter(weatherObj, 'r');
+							result.Pressure = getParameter(weatherObj, 'msl');
+							result.WindDirection = getParameter(weatherObj, 'wd');
+							result.WindSpeed = getParameter(weatherObj, 'ws');
+							result.CloudCover = getParameter(weatherObj, 'tcc');
+							result.Precipitation = getParameter(weatherObj, 'pit');
+							result.PrecipitationType = getParameter(weatherObj, 'pcat');
 							
 							break;
 					}
@@ -50,25 +78,18 @@ angular.module('mirrorApp').filter("PrecipitationTypeToString", function(){
 		switch(precipitationType){
 			case 0:
 				return "ingen nederbörd";
-				break;
 			case 1:
 				return "snö";
-				break;
 			case 2:
 				return "snöblandat regn";
-				break;
 			case 3:
 				return "regn";
-				break;
 			case 4:
 				return "duggregn";
-				break;
 			case 5:
 				return "hagel";
-				break;
 			case 6:
 				return "fruset regn";
-				break;
 			default:
 				return "fallande gummiankor?";
 		}
